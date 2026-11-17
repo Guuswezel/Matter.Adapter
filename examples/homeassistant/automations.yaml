@@ -1,0 +1,111 @@
+- id: aquarium_luft_daily_schedule
+  alias: Aquarium Luft - daily 17:00 to 17:15
+  description: Run the aquarium air pump for 15 minutes, including recovery after restart.
+  triggers:
+    - trigger: time
+      at: "17:00:00"
+    - trigger: time
+      at: "17:15:00"
+    - trigger: homeassistant
+      event: start
+    - trigger: state
+      entity_id: switch.workingroom_aquarium_luft
+      from: [unavailable, unknown]
+      to: ["on", "off"]
+  actions:
+    - choose:
+        - conditions:
+            - condition: time
+              after: "17:00:00"
+              before: "17:15:00"
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.workingroom_aquarium_luft
+      default:
+        - action: switch.turn_off
+          target:
+            entity_id: switch.workingroom_aquarium_luft
+  mode: restart
+
+- id: aquarium_light_sun_schedule
+  alias: Aquarium Light - sunrise to sunset
+  description: Follow daylight at the configured Home Assistant location.
+  triggers:
+    - trigger: sun
+      event: sunrise
+    - trigger: sun
+      event: sunset
+    - trigger: homeassistant
+      event: start
+    - trigger: state
+      entity_id: switch.workingroom_aquarium_light
+      from: [unavailable, unknown]
+      to: ["on", "off"]
+  actions:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sun.sun
+              state: above_horizon
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.workingroom_aquarium_light
+      default:
+        - action: switch.turn_off
+          target:
+            entity_id: switch.workingroom_aquarium_light
+  mode: restart
+
+- id: weihnachts_stern_evening_schedule
+  alias: Weihnachts Stern - sunset, light show and bedtime
+  description: 2400 K after sunset, festive show 20:00-20:30, off at 23:00.
+  triggers:
+    - trigger: sun
+      event: sunset
+    - trigger: time
+      at: "20:00:00"
+    - trigger: time
+      at: "20:30:00"
+    - trigger: time
+      at: "23:00:00"
+    - trigger: homeassistant
+      event: start
+    - trigger: state
+      entity_id: light.living_room_weihnachts_stern
+      from: [unavailable, unknown]
+      to: ["on", "off"]
+  actions:
+    - action: script.turn_off
+      target:
+        entity_id: script.weihnachts_stern_light_show
+    - choose:
+        - conditions:
+            - condition: sun
+              after: sunset
+            - condition: time
+              before: "23:00:00"
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.living_room_weihnachts_stern
+              data:
+                color_temp_kelvin: 2400
+                brightness_pct: 70
+                transition: 3
+            - if:
+                - condition: time
+                  after: "20:00:00"
+                  before: "20:30:00"
+              then:
+                - action: script.turn_on
+                  target:
+                    entity_id: script.weihnachts_stern_light_show
+      default:
+        - action: light.turn_off
+          target:
+            entity_id: light.living_room_weihnachts_stern
+          data:
+            transition: 3
+  mode: restart

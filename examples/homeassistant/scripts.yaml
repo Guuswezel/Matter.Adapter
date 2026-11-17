@@ -1,0 +1,82 @@
+weihnachts_stern_light_show:
+  alias: Weihnachts Stern - Aurora and festive sparkle
+  description: Smooth colour sweeps, golden twinkles and slow festive colour pops.
+  mode: single
+  sequence:
+    - condition: time
+      after: "20:00:00"
+      before: "20:30:00"
+    - condition: sun
+      after: sunset
+    - repeat:
+        while:
+          - condition: time
+            after: "20:00:00"
+            before: "20:30:00"
+          - condition: state
+            entity_id: light.living_room_weihnachts_stern
+            state: "on"
+        sequence:
+          - choose:
+              - conditions: "{{ repeat.index % 3 == 1 }}"
+                sequence:
+                  - repeat:
+                      for_each: [[0, 95], [42, 90], [125, 90], [220, 90], [285, 85]]
+                      sequence:
+                        - condition: state
+                          entity_id: light.living_room_weihnachts_stern
+                          state: "on"
+                        - action: light.turn_on
+                          target:
+                            entity_id: light.living_room_weihnachts_stern
+                          data:
+                            hs_color: "{{ repeat.item }}"
+                            brightness_pct: 65
+                            transition: 8
+                        - delay:
+                            seconds: 10
+              - conditions: "{{ repeat.index % 3 == 2 }}"
+                sequence:
+                  - repeat:
+                      count: 3
+                      sequence:
+                        - condition: state
+                          entity_id: light.living_room_weihnachts_stern
+                          state: "on"
+                        - action: light.turn_on
+                          target:
+                            entity_id: light.living_room_weihnachts_stern
+                          data:
+                            hs_color: [42, 95]
+                            brightness_pct: 80
+                            transition: 0.4
+                        - delay:
+                            milliseconds: 1200
+                        - condition: state
+                          entity_id: light.living_room_weihnachts_stern
+                          state: "on"
+                        - action: light.turn_on
+                          target:
+                            entity_id: light.living_room_weihnachts_stern
+                          data:
+                            hs_color: [42, 70]
+                            brightness_pct: 25
+                            transition: 0.8
+                        - delay:
+                            milliseconds: 1200
+            default:
+              - repeat:
+                  for_each: [[0, 95], [125, 95], [220, 95], [42, 90]]
+                  sequence:
+                    - condition: state
+                      entity_id: light.living_room_weihnachts_stern
+                      state: "on"
+                    - action: light.turn_on
+                      target:
+                        entity_id: light.living_room_weihnachts_stern
+                      data:
+                        hs_color: "{{ repeat.item }}"
+                        brightness_pct: 75
+                        transition: 0
+                    - delay:
+                        seconds: 2

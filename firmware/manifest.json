@@ -1,0 +1,20 @@
+{
+  "board": "Seeed Studio XIAO MG24 (Sense)",
+  "mcu": "EFR32MG24B220F1536IM48",
+  "release": "20250627",
+  "release_url": "https://github.com/darkxst/silabs-firmware-builder/releases/tag/20250627",
+  "version": "2.5.3.0_GitHub-1fceb225b",
+  "baudrate": 460800,
+  "flow_control": false,
+  "application": {
+    "filename": "xiao_mg24_openthread_rcp_2.5.3.0_GitHub-1fceb225b_gsdk_2024.6.3_no_flow_460800.gbl",
+    "sha256": "f4701a4b8dd87a0a8dfc72cfcae0eb82c43226b101b9a920074067dc9eac77b8",
+    "hex_sha256": "77d873271758f242a67302bbf73a43ad6ab4de359970e66b5eefb11239144c88",
+    "start_address": "0x08006000"
+  },
+  "bootloader": {
+    "filename": "xiao_mg24_bootloader_2.5.3_BL_PC00.gbl",
+    "sha256": "f5871968b7d7b6c5c853f38711a23b35c76f977bf32338dd6bed2274c958d083",
+    "hex_sha256": "f2c41a1a7ae06991f188b406c7b93910be92fd92f0b389185b46bcbeed014409"
+  }
+}

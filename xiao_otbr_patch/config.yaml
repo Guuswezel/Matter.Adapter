@@ -1,0 +1,53 @@
+---
+version: "3.2.16"
+breaking_versions: [3.0.0]
+slug: xiao_otbr_patch
+name: XIAO MG24 Thread Border Router
+description: OpenThread Border Router with XIAO MG24 antenna initialization
+stage: experimental
+arch:
+  - aarch64
+homeassistant: 2025.7.0
+gpio: true
+usb: true
+hassio_api: true
+discovery:
+  - otbr
+# IPC is only used within the Add-on
+host_ipc: false
+host_network: true
+host_uts: true
+privileged:
+  - IPC_LOCK
+  - NET_ADMIN
+devices:
+  - /dev/net/tun
+# No image key: Supervisor must build this local app from Dockerfile.
+init: false
+options:
+  device: null
+  adapter_serial: ""
+  baudrate: "460800"
+  flow_control: false
+  otbr_log_level: notice
+  firewall: true
+  nat64: false
+  beta: false
+ports:
+  8080/tcp: null
+  8081/tcp: null
+ports_description:
+  8080/tcp: OpenThread Web port
+  8081/tcp: OpenThread REST API port
+schema:
+  device: device(subsystem=tty)
+  adapter_serial: str?
+  baudrate: list(57600|115200|230400|460800|921600|1000000)
+  flow_control: bool
+  backbone_interface: str?
+  network_device: str?
+  otbr_log_level: list(debug|info|notice|warning|error|critical|alert|emergency)
+  firewall: bool
+  nat64: bool
+  beta: bool?
+startup: services

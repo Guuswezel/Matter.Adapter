@@ -1,0 +1,22 @@
+name: Validate repository and ARM64 app
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - run: sudo apt-get update && sudo apt-get install -y tcl ruby shellcheck
+      - run: make test
+      - name: Lint maintained shell entry points
+        run: shellcheck xiao_otbr_patch/rootfs/usr/local/bin/xiao-antenna-init tools/test_container.sh
+  container:
+    # The only supported target is ARM64; build natively without emulating USB.
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - run: make image container-test

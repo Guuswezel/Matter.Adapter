@@ -1,0 +1,25 @@
+# Host-specific installations, credentials, recovery dumps and old experiments.
+/private/
+/.cache/
+/.tools/
+/.arduino/
+/vendor/
+/haos/
+/Home Assistant.utm/
+/arduino-cli.yaml
+/tools/openocd-aarch64/
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.bin
+*.gbl
+*.hex
+*.tar
+*.tar.gz
+*.tar.bz2
+*.backup
+*.db
+*.db-shm
+*.db-wal

@@ -1,0 +1,19 @@
+XIAO MG24 Thread Border Router
+
+The OTBR app service and migration code is adapted from Home Assistant's
+OpenThread Border Router app, Apache License 2.0:
+https://github.com/home-assistant/addons/tree/ceb80015bed5531ff15b969457804f6cf91eef47/openthread_border_router
+
+The runtime derives from Home Assistant OTBR image 3.4.0, index digest:
+sha256:d2fd3bd186c51a967e9222a6a903308b6b93455c5e093f5a0adfb76c01b94b23
+
+OpenOCD is a separate GPL-licensed program; see OPENOCD-LICENSE.
+Arduino package: 0.12.0-arduino1-static, aarch64-linux-gnu
+Archive: https://downloads.arduino.cc/tools/openocd-0.12.0-arduino1-static-aarch64-linux-gnu.tar.bz2
+SHA-256: d6d78fb9f422647a7606213925f037593e5dbd6ad4d6670c3a54ab9ec1cc0cd1
+Reported source revision: 21fa2de702699ff647a5fc118718884b5d9f28fd
+Source: https://github.com/arduino/OpenOCD/tree/21fa2de702699ff647a5fc118718884b5d9f28fd
+Review that source tree and Arduino package metadata for build instructions.
+
+Other programs and libraries in the upstream image retain their own licenses.
+Firmware is obtained separately from its publisher and is not included here.

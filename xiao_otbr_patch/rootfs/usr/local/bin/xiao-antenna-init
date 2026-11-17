@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+device=${1:?Usage: xiao-antenna-init DEVICE [ADAPTER_SERIAL]}
+serial=${2:-}
+pattern='^/dev/serial/by-id/usb-Seeed_Studio_.*XIAO_MG24.*CMSIS-DAP_([A-Za-z0-9]+)-if[0-9]+$'
+if [[ "$device" =~ $pattern ]]; then
+    detected=${BASH_REMATCH[1]}
+    if [[ -n "$serial" && "$serial" != "$detected" ]]; then
+        echo "adapter_serial disagrees with the selected device; refusing to reset another board." >&2
+        exit 2
+    fi
+    serial=$detected
+fi
+if [[ ! "$serial" =~ ^[A-Za-z0-9_-]+$ ]]; then
+    echo "Select the XIAO's /dev/serial/by-id/ path, or set adapter_serial to its CMSIS-DAP USB serial." >&2
+    exit 2
+fi
+
+export XIAO_ADAPTER_SERIAL=$serial
+exec timeout 15 /opt/openocd/bin/openocd \
+    -s /opt/openocd/share/openocd/scripts \
+    -f /usr/local/share/xiao-antenna.cfg
